@@ -3,10 +3,10 @@ const RUNTIME_CACHE = 'english-verbs-runtime-v2';
 const SUPABASE_CACHE = 'english-verbs-supabase-v2';
 
 const urlsToCache = [
-  '/',
-  '/index.html',
-  '/manifest.json',
-  '/icon.svg',
+  './',
+  './index.html',
+  './manifest.json',
+  './icon.svg',
 ];
 
 self.addEventListener('install', (event) => {
@@ -58,8 +58,8 @@ self.addEventListener('fetch', (event) => {
   }
 
   if (request.destination === 'document' ||
-      request.destination === 'script' ||
-      request.destination === 'style') {
+    request.destination === 'script' ||
+    request.destination === 'style') {
     event.respondWith(
       caches.match(request).then((cachedResponse) => {
         if (cachedResponse) {

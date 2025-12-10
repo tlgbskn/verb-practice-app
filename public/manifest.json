@@ -35,29 +35,29 @@
       "name": "Search Verbs",
       "short_name": "Search",
       "description": "Search for English verbs",
-      "url": "/?page=search&source=shortcut"
+      "url": "./?page=search&source=shortcut"
     },
     {
       "name": "Learn Mode",
       "short_name": "Learn",
       "description": "Study verbs with flashcards",
-      "url": "/?page=learn&source=shortcut"
+      "url": "./?page=learn&source=shortcut"
     },
     {
       "name": "Practice Quiz",
       "short_name": "Practice",
       "description": "Test your knowledge",
-      "url": "/?page=practice&source=shortcut"
+      "url": "./?page=practice&source=shortcut"
     },
     {
       "name": "Favorites",
       "short_name": "Favorites",
       "description": "View your favorite verbs",
-      "url": "/?page=favorites&source=shortcut"
+      "url": "./?page=favorites&source=shortcut"
     }
   ],
   "share_target": {
-    "action": "/?share-target",
+    "action": "./?share-target",
     "method": "GET",
     "params": {
       "title": "title",
