@@ -2,10 +2,14 @@
   "name": "English Verbs Learning - Master Irregular, Phrasal & Stative Verbs",
   "short_name": "EnglishVerbs",
   "description": "Master English verbs with interactive flashcards, spaced repetition, and practice quizzes. Learn irregular verbs, phrasal verbs, and verb patterns offline!",
-  "start_url": "/?source=pwa",
-  "scope": "/",
+  "start_url": "./?source=pwa",
+  "scope": "./",
   "display": "standalone",
-  "display_override": ["window-controls-overlay", "standalone", "minimal-ui"],
+  "display_override": [
+    "window-controls-overlay",
+    "standalone",
+    "minimal-ui"
+  ],
   "background_color": "#ffffff",
   "theme_color": "#16a34a",
   "orientation": "portrait-primary",
@@ -14,13 +18,17 @@
   "prefer_related_applications": false,
   "icons": [
     {
-      "src": "/icon.svg",
+      "src": "icon.svg",
       "sizes": "192x192 512x512",
       "type": "image/svg+xml",
       "purpose": "any maskable"
     }
   ],
-  "categories": ["education", "productivity", "lifestyle"],
+  "categories": [
+    "education",
+    "productivity",
+    "lifestyle"
+  ],
   "screenshots": [],
   "shortcuts": [
     {
