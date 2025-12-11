@@ -49,7 +49,7 @@ export default function MilestonesPage() {
                         description: 'Start with the most common irregular verbs.',
                         totalVerbs: 20, // Goal
                         masteredVerbs: Math.min(masteredCount.irregular, 20),
-                        status: 'unlocked', // First one always open
+                        status: 'unlocked', // Always unlocked
                         type: 'irregular'
                     },
                     {
@@ -58,7 +58,8 @@ export default function MilestonesPage() {
                         description: 'Essential phrasal verbs for daily use.',
                         totalVerbs: 15,
                         masteredVerbs: Math.min(masteredCount.phrasal, 15),
-                        status: masteredCount.irregular >= 10 ? 'unlocked' : 'locked', // Unlock condition
+                        // Unlock if previous tier has some progress (e.g., > 5 verbs mastered)
+                        status: masteredCount.irregular >= 5 ? 'unlocked' : 'locked',
                         type: 'phrasal'
                     },
                     {
@@ -75,8 +76,8 @@ export default function MilestonesPage() {
                         title: 'Irregular Mastery',
                         description: 'More complex irregular verbs.',
                         totalVerbs: 30,
-                        masteredVerbs: Math.max(0, masteredCount.irregular - 20), // Remaining
-                        status: masteredCount.irregular >= 20 ? 'unlocked' : 'locked',
+                        masteredVerbs: Math.max(0, masteredCount.irregular - 20),
+                        status: masteredCount.irregular >= 15 ? 'unlocked' : 'locked',
                         type: 'irregular'
                     },
                 ];

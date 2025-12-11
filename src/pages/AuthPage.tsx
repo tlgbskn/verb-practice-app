@@ -27,12 +27,18 @@ export default function AuthPage({ onNavigate }: AuthPageProps) {
                 if (error) throw error;
                 onNavigate?.('home'); // Redirect to home on success
             } else {
-                const { error } = await supabase.auth.signUp({
+                const { data, error } = await supabase.auth.signUp({
                     email,
                     password,
                 });
                 if (error) throw error;
-                alert('Check your email for the confirmation link!');
+
+                if (data.session) {
+                    onNavigate?.('home');
+                } else {
+                    alert('Registration successful! Please check your email to confirm your account.');
+                    setIsLogin(true);
+                }
             }
         } catch (err: any) {
             setError(err.message);

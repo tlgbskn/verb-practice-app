@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
-import { ChevronRight, Check, X, RotateCcw, Loader, Sparkles, Calendar, TrendingUp } from 'lucide-react';
+import { Check, X, RotateCcw, Loader, Sparkles, TrendingUp } from 'lucide-react';
 import { supabase, IrregularVerb, PhrasalVerb, UserProgress } from '../lib/supabase';
-import { calculateSRS, INITIAL_EASE_FACTOR } from '../lib/srs';
+import { calculateSRS } from '../lib/srs';
 import { useAuth } from '../contexts/AuthContext';
 
 type VerbItem = {
@@ -269,6 +269,14 @@ export default function LearnPage() {
                 }`}>
                 {currentVerb.type}
               </span>
+
+              <div className={`inline-block ml-2 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider border ${!currentVerb.progress ? 'bg-gray-100 text-gray-500 border-gray-200' :
+                currentVerb.progress.status === 'mastered' ? 'bg-green-100 text-green-700 border-green-200' :
+                  currentVerb.progress.status === 'learning' ? 'bg-yellow-100 text-yellow-700 border-yellow-200' :
+                    'bg-gray-100 text-gray-500 border-gray-200'
+                }`}>
+                {currentVerb.progress ? currentVerb.progress.status : 'New'}
+              </div>
 
               <h2 className="text-5xl font-bold text-gray-900">{currentVerb.front}</h2>
 
