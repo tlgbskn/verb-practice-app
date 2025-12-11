@@ -40,6 +40,27 @@
   </head>
   <body>
     <div id="root"></div>
+    <!-- Self-healing script for Service Worker issues -->
+    <script>
+      window.addEventListener('error', (e) => {
+        // Check for script/link loading errors (often caused by stale SW cache)
+        if (e.target && (e.target.tagName === 'SCRIPT' || e.target.tagName === 'LINK')) {
+           console.error('Resource loading failed:', e.target.src || e.target.href);
+           if (!sessionStorage.getItem('sw_fallback_reloaded')) {
+              if ('serviceWorker' in navigator) {
+                  navigator.serviceWorker.getRegistrations().then(registrations => {
+                      const unregisterPromises = registrations.map(r => r.unregister());
+                      Promise.all(unregisterPromises).then(() => {
+                          console.log('Unregistered SW due to error, reloading...');
+                          sessionStorage.setItem('sw_fallback_reloaded', 'true');
+                          window.location.reload();
+                      });
+                  });
+              }
+           }
+        }
+      }, true);
+    </script>
     <script type="module" src="/src/main.tsx"></script>
 
     <!-- Service Worker Registration -->
