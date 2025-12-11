@@ -1,4 +1,4 @@
-import { BookOpen, Brain, List, Sparkles, Home, Trophy, Menu, X, GraduationCap, BarChart3, Search, Star } from 'lucide-react';
+import { BookOpen, Brain, List, Sparkles, Home, Trophy, Menu, X, GraduationCap, BarChart3, Search, Star, Map } from 'lucide-react';
 import { useState, ReactNode } from 'react';
 import InstallPrompt from './InstallPrompt';
 
@@ -13,10 +13,11 @@ export default function Layout({ children, currentPage, onNavigate }: LayoutProp
 
   const bottomNavItems = [
     { id: 'home', label: 'Home', icon: Home },
+    { id: 'milestones', label: 'Map', icon: Map },
     { id: 'search', label: 'Search', icon: Search },
     { id: 'learn', label: 'Learn', icon: GraduationCap },
     { id: 'favorites', label: 'Favorites', icon: Star },
-    { id: 'dashboard', label: 'Stats', icon: BarChart3 },
+    // { id: 'dashboard', label: 'Stats', icon: BarChart3 }, // Stats might be redundant with Map now
   ];
 
   const menuItems = [
@@ -71,11 +72,10 @@ export default function Layout({ children, currentPage, onNavigate }: LayoutProp
                       onNavigate(item.id);
                       setMenuOpen(false);
                     }}
-                    className={`w-full flex items-center gap-3 px-4 py-4 rounded-xl transition-all ${
-                      isActive
+                    className={`w-full flex items-center gap-3 px-4 py-4 rounded-xl transition-all ${isActive
                         ? 'bg-green-600 text-white shadow-md'
                         : 'text-gray-700 hover:bg-gray-100'
-                    }`}
+                      }`}
                   >
                     <Icon size={22} />
                     <span className="font-medium">{item.label}</span>
@@ -102,11 +102,10 @@ export default function Layout({ children, currentPage, onNavigate }: LayoutProp
               <button
                 key={item.id}
                 onClick={() => onNavigate(item.id)}
-                className={`flex flex-col items-center justify-center py-2 px-1 transition-all ${
-                  isActive
+                className={`flex flex-col items-center justify-center py-2 px-1 transition-all ${isActive
                     ? 'text-green-600'
                     : 'text-gray-500 hover:text-gray-700'
-                }`}
+                  }`}
               >
                 <Icon size={24} className={isActive ? 'stroke-2' : ''} />
                 <span className={`text-xs mt-1 ${isActive ? 'font-semibold' : 'font-medium'}`}>
@@ -135,11 +134,10 @@ export default function Layout({ children, currentPage, onNavigate }: LayoutProp
               <button
                 key={item.id}
                 onClick={() => onNavigate(item.id)}
-                className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-all ${
-                  isActive
+                className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-all ${isActive
                     ? 'bg-green-600 text-white shadow-md'
                     : 'text-gray-700 hover:bg-gray-100'
-                }`}
+                  }`}
               >
                 <Icon size={20} />
                 <span className="font-medium">{item.label}</span>

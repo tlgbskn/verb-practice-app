@@ -14,13 +14,14 @@ import StativeVerbsPage from './pages/StativeVerbsPage';
 import VerbPatternsPage from './pages/VerbPatternsPage';
 import PracticePage from './pages/PracticePage';
 import AuthPage from './pages/AuthPage';
+import MilestonesPage from './pages/MilestonesPage';
 
 function MainApp() {
   const [currentPage, setCurrentPage] = useState('home');
   const { user, loading } = useAuth();
 
   // Pages that require login
-  const protectedPages = ['dashboard', 'favorites', 'learn', 'practice'];
+  const protectedPages = ['dashboard', 'favorites', 'learn', 'practice', 'milestones'];
 
   useEffect(() => {
     // Redirect to auth if trying to access protected page while logged out
@@ -37,6 +38,8 @@ function MainApp() {
         return <HomePage onNavigate={setCurrentPage} />;
       case 'auth':
         return <AuthPage onNavigate={setCurrentPage} />;
+      case 'milestones':
+        return <MilestonesPage />;
       case 'search':
         return <SearchPage />;
       case 'favorites':
