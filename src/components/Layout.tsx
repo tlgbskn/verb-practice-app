@@ -1,6 +1,7 @@
-import { BookOpen, Brain, List, Sparkles, Home, Trophy, Menu, X, GraduationCap, BarChart3, Search, Star, Map } from 'lucide-react';
+import { BookOpen, Brain, List, Sparkles, Home, Trophy, Menu, X, GraduationCap, Search, Star, Map, LogOut, User as UserIcon } from 'lucide-react';
 import { useState, ReactNode } from 'react';
 import InstallPrompt from './InstallPrompt';
+import { useAuth } from '../contexts/AuthContext';
 
 interface LayoutProps {
   children: ReactNode;
@@ -10,6 +11,7 @@ interface LayoutProps {
 
 export default function Layout({ children, currentPage, onNavigate }: LayoutProps) {
   const [menuOpen, setMenuOpen] = useState(false);
+  const { user, signOut } = useAuth();
 
   const bottomNavItems = [
     { id: 'home', label: 'Home', icon: Home },
@@ -73,8 +75,8 @@ export default function Layout({ children, currentPage, onNavigate }: LayoutProp
                       setMenuOpen(false);
                     }}
                     className={`w-full flex items-center gap-3 px-4 py-4 rounded-xl transition-all ${isActive
-                        ? 'bg-green-600 text-white shadow-md'
-                        : 'text-gray-700 hover:bg-gray-100'
+                      ? 'bg-green-600 text-white shadow-md'
+                      : 'text-gray-700 hover:bg-gray-100'
                       }`}
                   >
                     <Icon size={22} />
@@ -82,6 +84,19 @@ export default function Layout({ children, currentPage, onNavigate }: LayoutProp
                   </button>
                 );
               })}
+
+              <div className="border-t border-gray-100 my-2 pt-2">
+                <button
+                  onClick={() => {
+                    signOut();
+                    setMenuOpen(false);
+                  }}
+                  className="w-full flex items-center gap-3 px-4 py-4 rounded-xl transition-all text-red-600 hover:bg-red-50"
+                >
+                  <LogOut size={22} />
+                  <span className="font-medium">Sign Out</span>
+                </button>
+              </div>
             </nav>
           </div>
         </>
@@ -103,8 +118,8 @@ export default function Layout({ children, currentPage, onNavigate }: LayoutProp
                 key={item.id}
                 onClick={() => onNavigate(item.id)}
                 className={`flex flex-col items-center justify-center py-2 px-1 transition-all ${isActive
-                    ? 'text-green-600'
-                    : 'text-gray-500 hover:text-gray-700'
+                  ? 'text-green-600'
+                  : 'text-gray-500 hover:text-gray-700'
                   }`}
               >
                 <Icon size={24} className={isActive ? 'stroke-2' : ''} />
@@ -135,8 +150,8 @@ export default function Layout({ children, currentPage, onNavigate }: LayoutProp
                 key={item.id}
                 onClick={() => onNavigate(item.id)}
                 className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-all ${isActive
-                    ? 'bg-green-600 text-white shadow-md'
-                    : 'text-gray-700 hover:bg-gray-100'
+                  ? 'bg-green-600 text-white shadow-md'
+                  : 'text-gray-700 hover:bg-gray-100'
                   }`}
               >
                 <Icon size={20} />
@@ -147,10 +162,26 @@ export default function Layout({ children, currentPage, onNavigate }: LayoutProp
         </nav>
 
         <div className="absolute bottom-0 left-0 right-0 p-4 border-t border-gray-200 bg-gray-50">
-          <div className="text-xs text-gray-600 text-center">
-            <p className="font-semibold">Learn • Practice • Master</p>
-            <p className="mt-1">Your path to fluency</p>
-          </div>
+          {user && (
+            <div className="flex items-center gap-3 p-2 mb-2 rounded-lg bg-white border border-gray-100 shadow-sm">
+              <div className="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center text-green-700">
+                <UserIcon size={16} />
+              </div>
+              <div className="flex-1 min-w-0">
+                <p className="text-xs font-medium text-gray-900 truncate">
+                  {user.email}
+                </p>
+              </div>
+            </div>
+          )}
+
+          <button
+            onClick={() => signOut()}
+            className="w-full flex items-center justify-center gap-2 p-2 text-sm text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+          >
+            <LogOut size={16} />
+            <span>Sign Out</span>
+          </button>
         </div>
       </aside>
 

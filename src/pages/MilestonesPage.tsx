@@ -25,9 +25,19 @@ export default function MilestonesPage() {
             try {
                 setLoading(true);
 
-                // 1. Fetch total counts (simulated for now, ideally strictly from DB)
-                // In a real app, we'd query the counts of each table. 
-                // For this demo, we'll create "Virtual Levels" based on fixed chunks.
+                // Fetch total counts from DB
+                const [irregularCount, phrasalCount, stativeCount] = await Promise.all([
+                    supabase.from('irregular_verbs').select('*', { count: 'exact', head: true }),
+                    supabase.from('phrasal_verbs').select('*', { count: 'exact', head: true }),
+                    supabase.from('stative_verbs').select('*', { count: 'exact', head: true }) // Assuming table exists? If not, fallback to 0
+                ]);
+
+                // Fallback for counts if table doesn't exist or error
+                const counts = {
+                    irregular: irregularCount.count || 20,
+                    phrasal: phrasalCount.count || 15,
+                    stative: stativeCount.count || 10
+                };
 
                 // Fetch user progress to see how many are mastered
                 const { data: progressData } = await supabase
@@ -47,7 +57,7 @@ export default function MilestonesPage() {
                         id: 1,
                         title: 'Irregular Basics',
                         description: 'Start with the most common irregular verbs.',
-                        totalVerbs: 20, // Goal
+                        totalVerbs: Math.min(20, counts.irregular),
                         masteredVerbs: Math.min(masteredCount.irregular, 20),
                         status: 'unlocked', // Always unlocked
                         type: 'irregular'
@@ -56,9 +66,9 @@ export default function MilestonesPage() {
                         id: 2,
                         title: 'Phrasal Starters',
                         description: 'Essential phrasal verbs for daily use.',
-                        totalVerbs: 15,
+                        totalVerbs: Math.min(15, counts.phrasal),
                         masteredVerbs: Math.min(masteredCount.phrasal, 15),
-                        // Unlock if previous tier has some progress (e.g., > 5 verbs mastered)
+                        // Unlock if previous tier has some progress
                         status: masteredCount.irregular >= 5 ? 'unlocked' : 'locked',
                         type: 'phrasal'
                     },
@@ -66,7 +76,7 @@ export default function MilestonesPage() {
                         id: 3,
                         title: 'Stative Feelings',
                         description: 'Verbs that describe states of being.',
-                        totalVerbs: 10,
+                        totalVerbs: Math.min(10, counts.stative), // Use fetched or fallback
                         masteredVerbs: Math.min(masteredCount.stative, 10),
                         status: masteredCount.phrasal >= 5 ? 'unlocked' : 'locked',
                         type: 'stative'
@@ -75,17 +85,20 @@ export default function MilestonesPage() {
                         id: 4,
                         title: 'Irregular Mastery',
                         description: 'More complex irregular verbs.',
-                        totalVerbs: 30,
+                        totalVerbs: Math.max(0, counts.irregular - 20),
                         masteredVerbs: Math.max(0, masteredCount.irregular - 20),
                         status: masteredCount.irregular >= 15 ? 'unlocked' : 'locked',
                         type: 'irregular'
                     },
                 ];
 
+                // Remove levels with 0 verbs if any (e.g. if Mastery has 0 left)
+                const validLevels = mapLevels.filter(l => l.totalVerbs > 0);
+
                 // Mark completed
-                const finalLevels = mapLevels.map(l => ({
+                const finalLevels = validLevels.map(l => ({
                     ...l,
-                    status: l.masteredVerbs >= l.totalVerbs ? 'completed' : l.status
+                    status: l.masteredVerbs >= l.totalVerbs && l.totalVerbs > 0 ? 'completed' : l.status
                 })) as Level[];
 
                 setLevels(finalLevels);
